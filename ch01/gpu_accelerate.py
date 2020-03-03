@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# coding=utf-8
+'''
+@Author: Ulysses
+@Date: 2020-02-24 16:51:56
+@LastEditors: Ulysses
+@LastEditTime: 2020-03-03 09:05:20
+'''
 import timeit
 import tensorflow as tf
 import numpy as np
@@ -10,10 +18,17 @@ matplotlib.rcParams['figure.figsize'] = [9, 7]
 matplotlib.rcParams['font.family'] = ['STKaiti']
 matplotlib.rcParams['axes.unicode_minus'] = False
 
+gpus = tf.config.experimental.list_physical_devices('GPU')
+try:
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
+except RuntimeError as e:
+    print(e)
+    
 
 cpu_data = []
 gpu_data = []
-for n in range(9):
+for n in range(7):
     n = 10**n
     # 创建在CPU上运算的2个矩阵
     with tf.device('/cpu:0'):
@@ -49,7 +64,7 @@ for n in range(9):
 
     del cpu_a, cpu_b, gpu_a, gpu_b
 
-x = [10**i for i in range(9)]
+x = [10**i for i in range(7)]
 cpu_data = [1000*i for i in cpu_data]
 gpu_data = [1000*i for i in gpu_data]
 plt.plot(x, cpu_data, 'C1')

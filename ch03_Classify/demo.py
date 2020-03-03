@@ -1,5 +1,13 @@
-import  tensorflow as tf
-from    tensorflow.keras import datasets, layers, optimizers, Sequential, metrics
+#!/usr/bin/python
+# coding=utf-8
+'''
+@Author: Ulysses
+@Date: 2020-02-24 16:51:56
+@LastEditors: Ulysses
+@LastEditTime: 2020-03-03 15:29:22
+'''
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, optimizers, Sequential, metrics
 
 
 # 设置GPU使用方式
