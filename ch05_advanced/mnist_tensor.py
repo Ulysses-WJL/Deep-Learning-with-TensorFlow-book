@@ -5,7 +5,7 @@ from    matplotlib import pyplot as plt
 matplotlib.rcParams['font.size'] = 20
 matplotlib.rcParams['figure.titlesize'] = 20
 matplotlib.rcParams['figure.figsize'] = [9, 7]
-matplotlib.rcParams['font.family'] = ['STKaiTi']
+matplotlib.rcParams['font.family'] = ['Noto Sans CJK JP']
 matplotlib.rcParams['axes.unicode_minus']=False 
 import  tensorflow as tf
 from    tensorflow import keras
@@ -13,7 +13,10 @@ from    tensorflow.keras import datasets, layers, optimizers
 import  os
 
 
-
+# #%%
+# plt.figure()
+# plt.title('测试')
+# plt.show()
 
 
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
