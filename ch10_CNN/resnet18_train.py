@@ -7,7 +7,12 @@ os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 tf.random.set_seed(2345)
 
 
-
+gpus = tf.config.experimental.list_physical_devices('GPU')
+try:
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True) 
+except RuntimeError as e:
+    print(e)
 
 
 def preprocess(x, y):
@@ -25,11 +30,11 @@ print(x.shape, y.shape, x_test.shape, y_test.shape)
 
 train_db = tf.data.Dataset.from_tensor_slices((x,y)) # 构建训练集
 # 随机打散，预处理，批量化
-train_db = train_db.shuffle(1000).map(preprocess).batch(512)
+train_db = train_db.shuffle(1000).map(preprocess).batch(128)
 
 test_db = tf.data.Dataset.from_tensor_slices((x_test,y_test)) #构建测试集
 # 随机打散，预处理，批量化
-test_db = test_db.map(preprocess).batch(512)
+test_db = test_db.map(preprocess).batch(128)
 # 采样一个样本
 sample = next(iter(train_db))
 print('sample:', sample[0].shape, sample[1].shape,
