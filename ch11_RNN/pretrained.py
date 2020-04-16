@@ -7,7 +7,9 @@ from tensorflow.keras import layers
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-
+from sklearn import datasets
+# 加载20newsgroups数据集
+news20 = datasets.fetch_20newsgroups()
 
 BASE_DIR = ''
 GLOVE_DIR = os.path.join(BASE_DIR, 'glove.6B')
