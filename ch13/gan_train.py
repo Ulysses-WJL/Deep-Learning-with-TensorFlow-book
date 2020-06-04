@@ -2,7 +2,9 @@ import  os
 import  numpy as np
 import  tensorflow as tf
 from    tensorflow import keras
-from    scipy.misc import toimage
+# from    scipy.misc import toimage
+from skimage import io
+import cv2
 import  glob
 from    gan import Generator, Discriminator
 
@@ -37,8 +39,9 @@ def save_result(val_out, val_block_size, image_path, color_mode):
 
     if final_image.shape[2] == 1:
         final_image = np.squeeze(final_image, axis=2)
-    toimage(final_image).save(image_path)
-
+    # toimage(final_image).save(image_path)
+    # io.imsave(image_path, final_image)
+    cv2.imwrite(image_path, final_image)
 
 def celoss_ones(logits):
     # 计算属于与标签为1的交叉熵
@@ -98,9 +101,9 @@ def main():
     # 获取数据集路径
     # C:\Users\z390\Downloads\anime-faces
     # r'C:\Users\z390\Downloads\faces\*.jpg'
-    img_path = glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.jpg') + \
-        glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.png')
-    # img_path = glob.glob(r'C:\Users\z390\Downloads\getchu_aligned_with_label\GetChu_aligned2\*.jpg')
+    # img_path = glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.jpg') + \
+        # glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.png')
+    img_path = glob.glob(r'D:\chrome_download\Deep-Learning-with-TensorFlow-book-master\Deep-Learning-with-TensorFlow-book-master\ch13\faces\*.jpg')
     # img_path.extend(img_path2)
     print('images num:', len(img_path))
     # 构建数据集对象
@@ -120,10 +123,12 @@ def main():
     # 分别为生成器和判别器创建优化器
     g_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
     d_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
-
-    generator.load_weights('generator.ckpt')
-    discriminator.load_weights('discriminator.ckpt')
-    print('Loaded chpt!!')
+    if os.path.exists(r'./generator.ckpt.index'):
+        generator.load_weights('generator.ckpt')
+        print('Loaded generator chpt!!')
+    if os.path.exists(r'./discriminator.ckpt.index'):
+        discriminator.load_weights('discriminator.ckpt')
+        print('Loaded discriminator chpt!!')
 
     d_losses, g_losses = [],[]
     for epoch in range(epochs): # 训练epochs次
@@ -164,7 +169,7 @@ def main():
                 generator.save_weights('generator.ckpt')
                 discriminator.save_weights('discriminator.ckpt')
 
-            
+
 
 
 
