@@ -3,13 +3,19 @@ import  numpy as np
 import  tensorflow as tf
 from    tensorflow import keras
 # from    scipy.misc import toimage
-from skimage import io
+# from skimage import io
 import cv2
 import  glob
-from    gan import Generator, Discriminator
+from gan import Generator, Discriminator
 
-from    dataset import make_anime_dataset
+from dataset import make_anime_dataset
 
+gpus = tf.config.experimental.list_physical_devices('GPU')
+try:
+    for gpu in gpus:
+        tf.config.experimental.set_memory_growth(gpu, True)
+except RuntimeError as e:
+    print(e)
 
 def save_result(val_out, val_block_size, image_path, color_mode):
     def preprocess(img):
@@ -103,7 +109,7 @@ def main():
     # r'C:\Users\z390\Downloads\faces\*.jpg'
     # img_path = glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.jpg') + \
         # glob.glob(r'C:\Users\z390\Downloads\anime-faces\*\*.png')
-    img_path = glob.glob(r'D:\chrome_download\Deep-Learning-with-TensorFlow-book-master\Deep-Learning-with-TensorFlow-book-master\ch13\faces\*.jpg')
+    img_path = glob.glob(r'/home/ulysses/workspace/AI/Deep-Learning-with-TensorFlow-book/ch13/faces/*.jpg')
     # img_path.extend(img_path2)
     print('images num:', len(img_path))
     # 构建数据集对象
@@ -121,8 +127,8 @@ def main():
     discriminator = Discriminator() # 创建判别器
     discriminator.build(input_shape=(4, 64, 64, 3))
     # 分别为生成器和判别器创建优化器
-    g_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
-    d_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
+    g_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9)
+    d_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9)
     if os.path.exists(r'./generator.ckpt.index'):
         generator.load_weights('generator.ckpt')
         print('Loaded generator chpt!!')
