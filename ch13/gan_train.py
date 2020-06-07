@@ -127,8 +127,8 @@ def main():
     discriminator = Discriminator() # 创建判别器
     discriminator.build(input_shape=(4, 64, 64, 3))
     # 分别为生成器和判别器创建优化器
-    g_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9)
-    d_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.9)
+    g_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
+    d_optimizer = keras.optimizers.Adam(learning_rate=learning_rate, beta_1=0.5)
     if os.path.exists(r'./generator.ckpt.index'):
         generator.load_weights('generator.ckpt')
         print('Loaded generator chpt!!')
@@ -163,17 +163,17 @@ def main():
             # 可视化
             z = tf.random.normal([100, z_dim])
             fake_image = generator(z, training=False)
-            img_path = os.path.join('gan_images', 'gan-%d.png'%epoch)
+            img_path = os.path.join('gan_images1', 'gan-%d.png'%epoch)
             save_result(fake_image.numpy(), 10, img_path, color_mode='P')
 
             d_losses.append(float(d_loss))
             g_losses.append(float(g_loss))
 
-            if epoch % 10000 == 1:
-                # print(d_losses)
-                # print(g_losses)
-                generator.save_weights('generator.ckpt')
-                discriminator.save_weights('discriminator.ckpt')
+        if epoch % 10000 == 0:
+            # print(d_losses)
+            # print(g_losses)
+            generator.save_weights('./check_point/generator.ckpt')
+            discriminator.save_weights('./check_point/discriminator.ckpt')
 
 
 
